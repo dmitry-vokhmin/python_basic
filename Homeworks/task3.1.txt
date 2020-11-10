@@ -1,0 +1,4 @@
+Vokhmin 21000
+Gorshkov 18000
+Abronin 23000
+Golubeva 10000
