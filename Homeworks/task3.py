@@ -33,7 +33,7 @@ class Cell:
     def __sub__(self, other):
         if self.amount - other.amount > 0:
             return self.amount - other.amount
-        return f"Клеток меньше нуля, вычетание невозможно"
+        raise ValueError("Клеток меньше нуля, вычетание невозможно")
 
     def __mul__(self, other):
         return  self.amount * other.amount
