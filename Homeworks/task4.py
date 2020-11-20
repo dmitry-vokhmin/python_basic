@@ -1,16 +1,48 @@
 class Warehouse:
-    pass
+    def __init__(self, name):
+        self.name = name
+        self.__box = []
+
+    def get_item(self, *args):
+        self.__box.extend(args)
+
+    def __getitem__(self, item):
+        try:
+            return self.__box[item]
+        except TypeError:
+            for tech in self.__box:
+                if item == tech.name:
+                    return tech
 
 class Technics:
-    def __init__(self, color, make):
-        self.color = color
-        self.make = make
+    def __init__(self, *args):
+        self.args = args
+
 
 class Printer(Technics):
-    pass
-class Scanner(Technics):
-    pass
-class Xerox(Technics):
-    pass
+    def __init__(self, model, year, name="printer", *args):
+        super().__init__(*args)
+        self.model = model
+        self.year = year
+        self.name = name
 
-print(a)
+class Scanner(Technics):
+    def __init__(self, model, year, name="scanner", *args):
+        super().__init__(*args)
+        self.model = model
+        self.year = year
+        self.name = name
+
+class Xerox(Technics):
+    def __init__(self, model, year, name="xerox", *args):
+        super().__init__(*args)
+        self.model = model
+        self.year = year
+        self.name = name
+
+a = Printer("sda", 2014)
+b = Scanner("wqewqe", 2015)
+c = Xerox("5weq1", 2016)
+warehouse = Warehouse("home")
+warehouse.get_item(a, b, c)
+print(warehouse["printer"])
