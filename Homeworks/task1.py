@@ -5,31 +5,19 @@
 В случае если встречается символ числа во входной строке возбудить ошибку ValueError
 """
 
-def crypto(text: str) -> str:
-    result = ""
+def cripto_two(text: str) -> str:
+    result = text[0]
     amount = 1
-    if len(text) > 1:
-        try:
-            for idx, itm in enumerate(text):
-                if text[idx + 1] != itm:
-                    result += text[idx]
-                if text[idx + 1] == itm:
-                    amount += 1
-                else:
-                    if amount != 1:
-                        result += str(amount)
-                        amount = 1
-                if itm.isdigit():
-                    raise ValueError
-        except IndexError:
-            if itm.isdigit():
-                raise ValueError
-            if amount != 1:
-                result += itm + str(amount)
-            else:
-                result += itm
+    for idx, char in enumerate(text):
+        if char.isdigit():
+            raise ValueError('Digit in text')
+        if char == result[-1]:
+            amount += 1
+        else:
+            result += f"{amount if amount > 1 else ''}{char}"
     else:
-        result += text
+        if amount > 1:
+            result += str(amount)
     return result
 
 if __name__ == '__main__':

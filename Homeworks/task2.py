@@ -1,20 +1,20 @@
-number = 15
-count = 1
-param = 1
-floor = 0
+def elevator(number):
+    count = 1  # блок
+    param = 1  # номер первой комнаты в блоке
+    floor = 1  # Этаж блока
 
-while number not in range(1, (count**2 + param)):
-        param = count**2 + param
+    # number >= (param + count ** 2)
+
+    while number >= (param + count ** 2):
+        param = count ** 2 + param
         floor += count
         count += 1
-if (number - (param - 1)) % count == 0:
-    floor = floor + ((number - (param - 1)) // count)
-    position = ((number - param) % count) + 1
-else:
-    floor = floor + ((number - (param - 1)) // count) + 1
-    position = (number - (param - 1)) % count
 
-print(param)
-print(count)
-print(f"{floor} этаж")
-print(f"{position} позиция")
+    floor, position = floor + ((number - param) // count), number - (((number - param) // count) * count + param) + 1
+
+    return floor, position
+
+
+if __name__ == '__main__':
+    a = elevator(10**20)
+    print(a)
