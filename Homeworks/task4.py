@@ -58,10 +58,13 @@ class ParserAll:
             url = data['next']
             yield data['results']
 
-    def save(self, file_path):
-        with open(os.path.join("D:/test/", file_path + ".json"), 'a', encoding='UTF-8') as file:
-            json.dump(self.file_structure, file, ensure_ascii=False)
-            self.file_structure["products"].clear()
+    def save(self, file_name):
+        if self.file_structure["products"]:
+            with open(os.path.join("D:/test/", file_name + ".json"), 'a', encoding='UTF-8') as file:
+                json.dump(self.file_structure, file, ensure_ascii=False)
+                self.file_structure["products"].clear()
+        else:
+            pass
 
 
 if __name__ == '__main__':
