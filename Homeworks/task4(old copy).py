@@ -1,7 +1,9 @@
-import json
+import os
+from pathlib import Path
 import time
+import json
 import requests
-import os, os.path
+from Homeworks import data_base
 
 
 class ParserAll:
@@ -24,15 +26,22 @@ class ParserAll:
     def __init__(self, start_url, cat_url):
         self.start_url = start_url
         self.cat_url = cat_url
+        self.data_base = data_base.DataBase("sqlite:///5ka.db")
 
     def run(self):
         for categories in self.parse_categories(self.cat_url):
             self.params['categories'] = categories['parent_group_code']
-            self.file_structure["name"] = categories['parent_group_name']
-            self.file_structure["code"] = categories['parent_group_code']
+            self.data_base.create_category({
+            "code": int(categories["code"]),
+            "name": categories["name"],
+        })
             for products in self.parse(self.start_url):
-                self.file_structure["products"].extend(products)
-            self.save(categories['parent_group_name'])
+                for product in products:
+                    self.data_base.create_product({
+                "id": product["id"],
+                "name": product["name"],
+                "img_link": product["img_link"],
+            })
 
     def _get(self, *args, **kwargs):
         while True:
@@ -59,12 +68,21 @@ class ParserAll:
             yield data['results']
 
     def save(self, file_name):
-        if self.file_structure["products"]:
-            with open(os.path.join("D:/test/", file_name + ".json"), 'a', encoding='UTF-8') as file:
-                json.dump(self.file_structure, file, ensure_ascii=False)
-                self.file_structure["products"].clear()
-        else:
-            pass
+        self.data_base.create_category({
+            "code": int(self.file_structure["code"]),
+            "name": self.file_structure["name"],
+        })
+        for product in self.file_structure["products"]:
+            self.data_base.create_product({
+                "id": product["id"],
+                "name": product["name"],
+                "img_link": product["img_link"],
+            })
+        # if self.file_structure["products"]:
+        #     file_path = Path(__file__).parent.joinpath(f"{file_name}.json")
+        #     file_path.write_text(json.dumps(self.file_structure, ensure_ascii=False))
+        #     self.file_structure["products"].clear()
+
 
 
 if __name__ == '__main__':
