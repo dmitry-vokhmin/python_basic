@@ -78,10 +78,10 @@ class ParserAll:
                 "name": product["name"],
                 "img_link": product["img_link"],
             })
-        # if self.file_structure["products"]:
-        #     file_path = Path(__file__).parent.joinpath(f"{file_name}.json")
-        #     file_path.write_text(json.dumps(self.file_structure, ensure_ascii=False))
-        #     self.file_structure["products"].clear()
+        if self.file_structure["products"]:
+            file_path = Path(__file__).parent.joinpath(f"{file_name}.json")
+            file_path.write_text(json.dumps(self.file_structure, ensure_ascii=False))
+            self.file_structure["products"].clear()
 
 
 
