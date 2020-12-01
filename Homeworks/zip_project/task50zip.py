@@ -2,13 +2,19 @@ import random, string
 import os
 import xml.etree.ElementTree as gfg
 import uuid
-from zipfile import ZipFile
+import zipfile
+import time
+
+start_time = time.time()
+
 
 def random_unique_str():
     return uuid.uuid1()
 
+
 def random_number():
     return random.randint(1, 100)
+
 
 def random_string():
     return "".join(random.choice(string.ascii_letters) for i in range(random.randint(10, 40)))
@@ -29,7 +35,7 @@ def generate_xml():
 
     amount = random.randint(1, 10)
     while amount:
-        object_name = gfg.SubElement(objects, f"object name={random_string()}")
+        object_name = gfg.SubElement(objects, f"object name='{random_string()}'")
         amount -= 1
 
     tree = gfg.ElementTree(root)
@@ -41,9 +47,10 @@ def generate_xml():
 
 
 if __name__ == '__main__':
+    os.makedirs("zip_folder")
     zip_amount = 50
     while zip_amount:
-        with ZipFile(f"{zip_amount}.zip", "w") as zipobj:
+        with zipfile.ZipFile(os.path.join(".\zip_folder", f"{zip_amount}.zip"), "w") as zipobj:
             xml_amount = 100
             while xml_amount:
                 xml_file = generate_xml()
@@ -51,3 +58,5 @@ if __name__ == '__main__':
                 os.remove(xml_file)
                 xml_amount -= 1
         zip_amount -= 1
+
+print("--- %s seconds ---" % (time.time() - start_time))
